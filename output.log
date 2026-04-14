@@ -1,0 +1,98 @@
+
+======================================================================
+PHOTOGRAMMETRY VARIANCE-BASED MASKING SCRIPT
+======================================================================
+This script identifies objects by analyzing pixel variance across
+all images in your dataset, filtering out static artifacts.
+======================================================================
+
+======================================================================
+SETUP
+======================================================================
+Loading backdrop: DSC_0028.jpg
+  Path: /Users/photolab/Downloads/PhotogrammetryMask/test_images/jpg/DSC_0028.jpg
+  Size: 8256x5504
+
+Found 25 total image files in folder
+  - Skipping backdrop: DSC_0028.jpg
+
+Dataset contains 24 images (excluding backdrop)
+
+======================================================================
+LOADING IMAGES
+======================================================================
+Loading 24 images as grayscale for variance analysis...
+  [1/24] Loading DSC_0004.jpg... ✓
+  [2/24] Loading DSC_0005.jpg... ✓
+  [3/24] Loading DSC_0006.jpg... ✓
+  [4/24] Loading DSC_0007.jpg... ✓
+  [5/24] Loading DSC_0008.jpg... ✓
+  [6/24] Loading DSC_0009.jpg... ✓
+  [7/24] Loading DSC_0010.jpg... ✓
+  [8/24] Loading DSC_0011.jpg... ✓
+  [9/24] Loading DSC_0012.jpg... ✓
+  [10/24] Loading DSC_0013.jpg... ✓
+  [11/24] Loading DSC_0014.jpg... ✓
+  [12/24] Loading DSC_0015.jpg... ✓
+  [13/24] Loading DSC_0016.jpg... ✓
+  [14/24] Loading DSC_0017.jpg... ✓
+  [15/24] Loading DSC_0018.jpg... ✓
+  [16/24] Loading DSC_0019.jpg... ✓
+  [17/24] Loading DSC_0020.jpg... ✓
+  [18/24] Loading DSC_0021.jpg... ✓
+  [19/24] Loading DSC_0022.jpg... ✓
+  [20/24] Loading DSC_0023.jpg... ✓
+  [21/24] Loading DSC_0024.jpg... ✓
+  [22/24] Loading DSC_0025.jpg... ✓
+  [23/24] Loading DSC_0026.jpg... ✓
+  [24/24] Loading DSC_0027.jpg... ✓
+
+Successfully loaded 24 images
+  Image dimensions: 8256x5504 pixels
+
+======================================================================
+PROCESSING
+======================================================================
+Processing 24 images...
+  Mode: white backdrop
+  Variance method: std
+  Variance percentile: 50.0 (keep top 50.0%)
+  Backdrop threshold: 20
+======================================================================
+[1/24] DSC_0004.jpg (variance-based, std, 50.0%) ✓
+[2/24] DSC_0005.jpg (variance-based, std, 50.0%) ✓
+[3/24] DSC_0006.jpg (variance-based, std, 50.0%) ✓
+[4/24] DSC_0007.jpg (variance-based, std, 50.0%) ✓
+[5/24] DSC_0008.jpg (variance-based, std, 50.0%) ✓
+[6/24] DSC_0009.jpg (variance-based, std, 50.0%) ✓
+[7/24] DSC_0010.jpg (variance-based, std, 50.0%) ✓
+[8/24] DSC_0011.jpg (variance-based, std, 50.0%) ✓
+[9/24] DSC_0012.jpg (variance-based, std, 50.0%) ✓
+[10/24] DSC_0013.jpg (variance-based, std, 50.0%) ✓
+[11/24] DSC_0014.jpg (variance-based, std, 50.0%) ✓
+[12/24] DSC_0015.jpg (variance-based, std, 50.0%) ✓
+[13/24] DSC_0016.jpg (variance-based, std, 50.0%) ✓
+[14/24] DSC_0017.jpg (variance-based, std, 50.0%) ✓
+[15/24] DSC_0018.jpg (variance-based, std, 50.0%) ✓
+[16/24] DSC_0019.jpg (variance-based, std, 50.0%) ✓
+[17/24] DSC_0020.jpg (variance-based, std, 50.0%) ✓
+[18/24] DSC_0021.jpg (variance-based, std, 50.0%) ✓
+[19/24] DSC_0022.jpg (variance-based, std, 50.0%) ✓
+[20/24] DSC_0023.jpg (variance-based, std, 50.0%) ✓
+[21/24] DSC_0024.jpg (variance-based, std, 50.0%) ✓
+[22/24] DSC_0025.jpg (variance-based, std, 50.0%) ✓
+[23/24] DSC_0026.jpg (variance-based, std, 50.0%) ✓
+[24/24] DSC_0027.jpg (variance-based, std, 50.0%) ✓
+======================================================================
+COMPLETE
+======================================================================
+Successfully processed: 24/24 images
+
+Output directory: /Users/photolab/Downloads/PhotogrammetryMask/test_images/jpg_masked
+Output format: PNG with transparency (alpha channel)
+
+Next steps:
+  1. Review masks in: /Users/photolab/Downloads/PhotogrammetryMask/test_images/jpg_masked
+  2. If quality issues, adjust --variance-percentile
+  3. Import masked images to photogrammetry software
+======================================================================

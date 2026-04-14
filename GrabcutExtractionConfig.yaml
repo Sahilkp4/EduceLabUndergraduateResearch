@@ -1,0 +1,172 @@
+# =============================================================================
+# GrabCut Extraction Configuration
+# =============================================================================
+# This file controls all tunable parameters for GrabcutExtraction.py.
+# Command-line arguments override values set here.
+# Delete or rename this file to use built-in defaults for everything.
+# Requires PyYAML: pip install pyyaml
+# =============================================================================
+
+# --- Core Algorithm Parameters ---
+
+# Number of sample images selected for initial training (user paints foreground on these).
+# More samples = better model but more manual work.  CLI override: -w / --samples
+initial_samples: 5
+
+# Always include the first image in the sample set.
+# When true, the first sample is always image 1, and the remaining
+# samples are evenly spaced with the last being the final image.
+include_first_image: true
+
+# GrabCut iterations when training on sample images (Phase 2).
+# Higher = tighter foreground/background models at low cost (only w images).
+# CLI override: --train-iterations
+train_iterations: 5
+
+# GrabCut iterations when propagating to all images (Phase 4).
+# Each iteration runs GC_INIT_WITH_MASK using a copy of the blended training models,
+# so model drift does not occur. 1 iteration applies spatial graph-cut smoothing;
+# 0 disables graph-cut and returns the raw GMM pixel classification (useful for
+# debugging). Values above 2 add runtime with diminishing quality returns.
+# CLI override: --propagate-iterations
+propagate_iterations: 1
+
+# Maximum retry attempts before giving up.
+# Each retry automatically increases samples and iterations.  CLI override: --max-retries
+max_retries: 5
+
+# --- Mask Processing ---
+
+# Pixels to dilate (expand) each mask boundary after segmentation.
+# Increase if object edges are being clipped; decrease if masks bleed into background.
+expansion_pixels: 3
+
+# Remove small noise blobs and keep only the largest connected foreground region.
+# Disable if your scene has multiple separated objects that should all be kept.
+mask_cleanup: true
+
+# Kernel size (pixels) for the morphological opening used by mask cleanup.
+# Larger values remove larger noise blobs but may erode thin object features.
+# Must be an odd number >= 3.
+mask_cleanup_kernel_size: 5
+
+# Fill interior background holes completely enclosed by the foreground region.
+# Handles areas that share the same colour as the background (e.g. white text
+# on a white background surface) which GrabCut cannot distinguish by colour alone.
+# Disable only if you need isolated holes preserved (rare).
+mask_fill_holes: true
+
+# --- Interactive Correction ---
+# After initial GrabCut on each sample, the user can draw corrections:
+#   GREEN strokes on missed foreground (false negatives)
+#   RED strokes on false foreground (false positives)
+# GrabCut re-learns its models from corrections and reclassifies similar pixels.
+
+# Default brush radius in image pixels for painting and correction strokes.
+# Can be adjusted interactively with [ / ] keys during painting.
+refine_brush_radius: 15
+
+# Minimum and maximum brush radius (limits for [ / ] adjustment).
+brush_min_radius: 2
+brush_max_radius: 500
+
+# GrabCut iterations per correction re-run (when user presses ENTER after drawing).
+refine_iterations: 5
+
+# --- Training Downscaling ---
+# Max image dimension (pixels) during interactive training.
+# Images larger than this are downscaled for faster GrabCut processing.
+# Propagation (Phase 4) always uses full resolution.
+# Set to 0 to disable downscaling.  CLI override: --training-max-dim
+training_max_dimension: 0
+
+# --- Template Rectangle ---
+# Bounding box averaged from sample masks, used to constrain Phase 4 propagation.
+
+# Safety margin as a fraction of averaged bounding box size (0.1 = 10% padding each side).
+# Increase if the object is being cropped during propagation.
+template_margin: 0.1
+
+# Minimum template rectangle dimension in pixels.
+# Prevents degenerate rectangles on very small objects.
+min_template_size: 50
+
+# --- Parallelization ---
+
+# Enable parallel processing for Phase 4.
+# Set to false for debugging or low-memory systems.  CLI override: --no-parallel
+use_parallel: true
+
+# Number of parallel worker processes (null = auto: CPU count - 1).
+# CLI override: --workers
+worker_count: null
+
+# Pixel-count thresholds for auto-reducing worker count.
+# When template rectangle exceeds these sizes, fewer workers are spawned
+# to avoid excessive memory use and CPU thrashing.
+large_template_threshold: 2000000
+very_large_template_threshold: 4000000
+
+# Max workers when template exceeds the thresholds above.
+large_template_max_workers: 5
+very_large_template_max_workers: 3
+
+# --- Display / UI ---
+
+# Show a startup instructions dialog before processing begins.
+# Set to false once you are familiar with the workflow.
+show_instructions_popup: true
+
+# Use fullscreen mode for all interactive windows (painting, correction, review).
+# When false, falls back to the selector_window / review_window sizes below.
+use_fullscreen: true
+
+# Maximum zoom level (1.0 = fit-to-screen). Scroll wheel zooms in/out.
+zoom_max: 50.0
+
+# Zoom multiplier per scroll wheel tick (1.15 = 15% per tick).
+zoom_step_factor: 1.15
+
+# Fallback window sizes when use_fullscreen is false.
+selector_window_width: 2200
+selector_window_height: 1200
+review_window_width: 1800
+review_window_height: 600
+
+# Images taller than this are scaled down for review display only (no effect on saved masks).
+review_max_display_height: 800
+
+# --- Retry Increments ---
+# How much each parameter increases when the user rejects results and retries.
+
+# Additional sample images per retry.
+retry_sample_increment: 2
+
+# Additional training iterations per retry.
+retry_train_increment: 1
+
+# Additional propagation iterations per retry.
+retry_propagate_increment: 1
+
+# --- Warning Thresholds ---
+
+# Total pixel count above which a "large image" warning is printed.
+large_image_pixel_threshold: 12000000
+
+# Warn when the template rectangle covers more than this % of the image.
+# High coverage means the rectangle-constrained speedup is reduced.
+template_coverage_warning_pct: 75
+
+# Empirical pixels-per-second rate used for Phase 4 time estimates.
+time_estimate_pixel_rate: 850000
+
+# --- File Configuration ---
+
+# Image file extensions to include (case-sensitive).
+supported_extensions:
+  - ".png"
+  - ".jpg"
+  - ".jpeg"
+  - ".PNG"
+  - ".JPG"
+  - ".JPEG"

@@ -1,0 +1,7 @@
+# Core dependencies
+opencv-python>=4.5
+numpy>=1.20
+
+# Optional: enables YAML config file support (config.yaml)
+# The script works without this, falling back to built-in defaults
+PyYAML>=5.0
